@@ -1,0 +1,49 @@
+---
+  objects:
+    prefixlists:
+      cloudflare:
+        type: web
+        origins:
+          - https://www.cloudflare.com/ips-v4
+          - https://www.cloudflare.com/ips-v6
+        format: text
+      
+      fullbogons-v4:
+        type: web
+        origins:
+          - https://www.team-cymru.org/Services/Bogons/fullbogons-ipv4.txt
+        format: text
+
+      fullbogons-v6:
+        type: web
+        origins:
+          - https://www.team-cymru.org/Services/Bogons/fullbogons-ipv6.txt
+        format: text
+
+      fullbogons:
+        type: merge
+        names:
+          - fullbogons-v4
+          - fullbogons-v6
+
+      private:
+        type: static
+        items:
+          - 10.0.0.0/8
+          - 172.16.0.0/12
+          - 192.168.0.0/16
+          - fc00::/7
+
+      any:
+        type: static
+        items:
+          - 0.0.0.0/0
+          - ::/0
+
+      aws:
+        type: aws
+
+      aws-sydney-ec2:
+        type: aws
+        region: ap-southeast-2
+        service: EC2

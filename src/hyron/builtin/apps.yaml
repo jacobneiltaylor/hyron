@@ -1,0 +1,104 @@
+---
+  objects:
+    appdefs:
+      apps:
+        ssh:
+          protocol: TCP
+          port: 22
+          meta:
+            jsrx-app: junos-ssh
+
+        http:
+          protocol: TCP
+          port: 80
+          meta:
+            jsrx-app: junos-http
+
+        https:
+          protocol: TCP
+          port: 443
+          meta:
+            jsrx-app: junos-https
+
+        dns-udp:
+          protocol: UDP
+          port: 53
+          meta:
+            jsrx-app: junos-dns-udp
+
+        dns-tcp:
+          protocol: TCP
+          port: 53
+          meta:
+            jsrx-app: junos-dns-tcp
+
+        ntp:
+          protocol: UDP
+          port: 123
+          meta:
+            jsrx-app: junos-ntp
+
+        smtp:
+          protocol: TCP
+          port: 25
+          meta:
+            jsrx-app: junos-smtp
+
+        smtp-submission:
+          protocol: TCP
+          port: 587
+
+        smtp-submission-alt:
+          protocol: TCP
+          port: 465
+
+        imap:
+          protocol: TCP
+          port: 143
+          meta:
+            jsrx-app: junos-imap
+
+        imaps:
+          protocol: TCP
+          port: 993
+          meta:
+            jsrx-app: junos-imaps
+
+        any-tcp:
+          protocol: TCP
+          from-port: 1
+          to-port: 65535
+          meta:
+            jsrx-app: junos-tcp-any
+
+        any-udp:
+          protocol: UDP
+          from-port: 1
+          to-port: 65535
+          meta:
+            jsrx-app: junos-udp-any
+
+      appgroups:
+        web:
+          - http
+          - https
+
+        dns:
+          - dns-tcp
+          - dns-udp
+
+        internet:
+          - web
+          - dns
+          - ntp
+
+        any:
+          - any-tcp
+          - any-udp
+
+        mail:
+          - smtp
+          - smtp-submission
+          - smtp-submission-alt
+          - imap
+          - imaps
