@@ -75,27 +75,3 @@ class PrefixList:
         name = self.metadata["name"]
         return f"{self.NAME_PREFIX}_{name}"
 
-
-class Host(PrefixList):
-    NAME_PREFIX = "host"
-
-    def __init__(self, ipv4addr: str = None, ipv6addr: str = None, **meta):
-        self.ipv4addr = ipv4addr
-        self.ipv6addr = ipv6addr
-
-        prefixes = []
-
-        if ipv4addr:
-            prefixes.append(ipv4addr)
-
-        if ipv6addr:
-            prefixes.append(ipv6addr)
-
-        super().__init__(prefixes, **meta)
-
-
-class HostList(PrefixList):
-    NAME_PREFIX = "hosts"
-
-    def __init__(self, hosts=[], **meta):
-        super().__init__([host.prefixes for host in hosts], **meta)

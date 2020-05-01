@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 from typing import List
 from ipaddress import ip_network
 from collections import defaultdict
@@ -139,23 +140,18 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
             self.zonal_policies[from_zones[0]][to_zones[0]].append(policy_object)
 
     def _build_artifacts(self):
-        policy_objects = []
+        zonal_policy_objects = []
 
         for from_zone, to_zones in self.zonal_policies.items():
             for to_zone, policies in to_zones.items():
-                policy_objects.append({
+                zonal_policy_objects.append({
                     "from-zone-name": from_zone,
                     "to-zone-name": to_zone,
-                    "policies": policies
+                    "policy": policies
                 })
         
-        if self.global_policies:
-            policy_objects.append({
-                "global-context": [None],
-                "policies": self.global_policies
-            })
 
-        artifact = json.dumps({
+        artifact = {
             "applications": {
                 "application": self.application_objects
             },
@@ -167,8 +163,23 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
                         "address-set": self.address_set_objects
                     }
                 ],
-                "policies": policy_objects
+                "policies": { 
+                    "policy": zonal_policy_objects
+                }
             }
-        }, indent=4)
+        }
 
-        return {"config.json":artifact}
+        if self.global_policies:
+            artifact["security"]["policies"]["global"] = {
+                "policy": self.global_policies
+            }
+
+        if not artifact["applications"]["application"]:
+            del artifact["applications"] # Workaround bug in Junos for handling empty applications in JSON format
+
+        if "apply-group" in self.config:
+            applygrp = deepcopy(artifact)
+            applygrp["name"] = str(self.config["apply-group"])
+            artifact = {"groups":[applygrp]}
+
+        return json.dumps({"configuration": artifact}, indent=4)

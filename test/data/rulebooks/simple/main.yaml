@@ -1,0 +1,56 @@
+---
+  $imports:
+    - common.objects
+
+  meta:
+    title: Management Access Policy
+    owner: IT Dept.
+    import_builtin: false
+
+  rules:
+    permit-ssh-access:
+      src: technician-networks
+      dst: management-supernet
+      app: ssh
+
+    permit-rdp-access:
+      src: technician-networks
+      dst: management-supernet
+      app: rdp
+
+  rulesets:
+    management-access:
+      rules:
+        - permit-ssh-access
+        - permit-rdp-access
+
+  renderers:
+    ec2sg:
+      ruleset: management-access
+      config:
+        description: "Permit management access"
+    jsrx:
+      ruleset: management-access
+      config:
+        apply-group: "MANAGEMENT_ACCESS"
+
+  artifacts:
+    ec2mgmt:
+      meta:
+        created: 01-05-2020
+      files:
+        security_group.json:
+          renderer: ec2sg
+          ruleset: management-access
+          config:
+            description: "Permit management access"
+
+    srxmgmt:
+      meta:
+        created: 02-05-2020
+      files:
+        config.json:
+          renderer: jsrx
+          ruleset: management-access
+          config:
+            apply-group: "MANAGEMENT_ACCESS"

@@ -1,8 +1,7 @@
 from .junos_srx_renderer import JunosSrxRenderer
-from .zone_providers import JunosSrxZoneProvider, DefaultJunosSrxZoneProvider
+from . import zone_providers
 
 __all__ = [
     "JunosSrxRenderer",
-    "JunosSrxZoneProvider",
-    "DefaultJunosSrxZoneProvider"
+    "zone_providers"
 ]

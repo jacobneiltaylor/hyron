@@ -1,11 +1,29 @@
 import os
+from dataclasses import field
 import radix
 
 from ruamel import yaml
 
 
+def _load(filename, handler):
+    with open(filename, 'r') as infile:
+        return handler(infile)
+
+
+def _get_pkg_filename(*args):
+    return os.path.join(get_pkg_dir(), *args)
+
+
+def default(factory):
+    return field(default_factory=factory)
+
+
 def get_base_dir(filename):
     return os.path.dirname(os.path.realpath(filename))
+
+
+def get_pkg_dir():
+    return get_base_dir(__file__)
 
 
 def optimise_prefixes(*prefix_list):
@@ -33,12 +51,19 @@ def get_plural_dict_item(dic, name, single_handler=lambda x: [x]):
 
 
 def load_yaml(filename):
-    with open(filename, 'r') as infile:
-        return yaml.load(infile, yaml.Loader)
+    return _load(filename, lambda x: yaml.load(x, yaml.Loader))
+
+
+def load_text(filename):
+    return _load(filename, lambda x: x.read())
 
 
 def get_builtin_filename(name):
-    return os.path.join(get_base_dir(__file__), "builtin", f"{name}.yaml")
+    return _get_pkg_filename("builtin", f"{name}.yaml")
+
+
+def get_asset_filename(name, ext="txt"):
+    return _get_pkg_filename("assets", f"{name}.{ext}")
 
 
 def on_dict_match(dic, key, value, if_retval, else_retval):

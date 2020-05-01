@@ -1,0 +1,29 @@
+---
+  objects:
+    appdefs:
+      apps:
+        ssh:
+          protocol: TCP
+          port: 22
+          meta:
+            jsrx-app: junos-ssh
+        rdp-tcp:
+          protocol: TCP
+          port: 3389
+        rdp-udp:
+          protocol: UDP
+          port: 3389
+      appgroups:
+        rdp:
+          - rdp-tcp
+          - rdp-udp
+    prefixlists:
+      technician-networks:
+        type: static
+        items:
+          - 10.0.0.0/24
+          - 10.1.0.0/24
+      management-supernet:
+        type: static
+        items:
+          - 10.255.0.0/16

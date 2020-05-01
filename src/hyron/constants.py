@@ -19,3 +19,19 @@ ACTIONS = [
     ACTION_REJECT,
     ACTION_IGNORE
 ]
+
+DICT = "dict"
+XDICT = {
+    "name": "dict",
+    "exclusive": True,
+}
+
+LOADER_SCHEMA = {
+    "meta": XDICT,
+    "artifacts": XDICT,
+    "rules": DICT,
+    "rulesets": DICT,
+    "objects": DICT,
+}
+
+DEF_ENCODING = "utf8"

@@ -1,11 +1,8 @@
 from .renderer import Renderer
-from .ec2sg import AwsEc2SecurityGroupRenderer
-from .jsrx import JunosSrxRenderer, JunosSrxZoneProvider, DefaultJunosSrxZoneProvider
+from . import jsrx, ec2sg
 
 __all__ = [
     "Renderer",
-    "AwsEc2SecurityGroupRenderer",
-    "JunosSrxRenderer",
-    "JunosSrxZoneProvider",
-    "DefaultJunosSrxZoneProvider"
+    "ec2sg",
+    "jsrx"
 ]

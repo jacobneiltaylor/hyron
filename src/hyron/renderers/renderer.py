@@ -5,6 +5,7 @@ from ..rules.rule_set import RuleSet, Rule
 from ..apps.application import Application
 from ..prefixlists.prefix_list import PrefixList
 from ..helpers import on_dict_match
+from ..artifacts import Artifact
 
 
 class Renderer(Plugable):
@@ -13,21 +14,12 @@ class Renderer(Plugable):
         which are a text-based representation of rules in a format native
         to a device or system capable of enforcing them.
     """
-    _RENDERERS = {}
+    BINARY = False # Set this flag to true if your Renderer outputs binary
 
     def __init__(self, **config):
         self.config = config
         self.metadata = None
         self.preprocess_entities = False
-        self._jobs = []
-
-    def queue_job(self, name, rule_set):
-        self._jobs.append((name, rule_set))
-
-    def run_all_jobs(self) -> Dict[str,Dict[str,str]]:
-        results = {name: self.build(rule_set) for name, rule_set in self._jobs}
-        self._queue = []
-        return results
 
     def build(self, rule_set: RuleSet) -> Dict[str,str]:
         self.metadata = rule_set.metadata

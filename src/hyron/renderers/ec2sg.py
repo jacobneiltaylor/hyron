@@ -1,14 +1,15 @@
 import json
 from ipaddress import ip_network
 
-from boto3 import Session
-
 from .renderer import Renderer
 from ..rules.rule_set import RuleSet, Rule
 from ..prefixlists.prefix_list import PrefixList
 from ..apps.application import Application, PortApplication
 from ..constants import ACTION_PERMIT
 
+__all__ = [
+    "AwsEc2SecurityGroupRenderer"
+]
 
 def _handle_app(app: Application):
     return {
@@ -95,7 +96,7 @@ class AwsEc2SecurityGroupRenderer(Renderer, register="ec2sg"):
                 self.permissions.append(permission)
 
     def _build_artifacts(self):
-        return {"security_group.json": json.dumps(self.permissions, indent=4)}
+        return json.dumps(self.permissions, indent=4)
 
     @classmethod
     def _format_protocol(cls, protocol):

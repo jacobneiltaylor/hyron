@@ -9,8 +9,7 @@ class PrefixListLoader:
     def __init__(self, config: dict = None):
         self._datasources = {}
         self._cached = {}
-        self._types = PrefixListDatasource.enum()
-
+        self._types = PrefixListDatasource.registry.enum()
         if config:
             self.include(config)
 
@@ -22,7 +21,7 @@ class PrefixListLoader:
                 del kwargs["type"]
                 if ds_type == "merge":
                     kwargs["loader"] = self # merge pfx lists require access to the loader to reference other prefix lists
-                self._datasources[name] = PrefixListDatasource.get(ds_type)(**kwargs)
+                self._datasources[name] = PrefixListDatasource.get(ds_type, **kwargs)
 
     @property
     def available(self):
@@ -32,7 +31,7 @@ class PrefixListLoader:
     def loaded(self):
         return set(self._cached.keys())
 
-    def __getitem__(self, key):
+    def __getitem__(self, key) -> PrefixList:
         if key not in self._cached:
             prefixes = self._datasources[key].fetch()
             self._cached[key] = PrefixList(prefixes, name=key)

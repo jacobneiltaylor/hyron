@@ -1,0 +1,7 @@
+
+    Usage: hyron [operation] [operation_args]
+
+    Operations:
+        - inspect: 
+        - renderers: List available renderers.
+        - render:
