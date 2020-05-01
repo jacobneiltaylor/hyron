@@ -1,5 +1,5 @@
 from copy import deepcopy
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict
 from ..helpers import default
 from ..apps import ApplicationLibrary
@@ -9,6 +9,7 @@ from ..renderers import Renderer
 from ..artifacts import Artifact, ArtifactBlueprint
 from ..constants import DEF_ENCODING
 
+
 @dataclass
 class Rulebook:
     title: str = "A Hyron Rulebook"
@@ -16,9 +17,9 @@ class Rulebook:
     encoding: str = DEF_ENCODING
     apps: ApplicationLibrary = default(ApplicationLibrary)
     prefixlists: PrefixListLoader = default(PrefixListLoader)
-    rules: Dict[str,Rule] = default(dict)
-    rulesets: Dict[str,RuleSet] = default(dict)
-    artifacts: Dict[str,ArtifactBlueprint] = default(dict)
+    rules: Dict[str, Rule] = default(dict)
+    rulesets: Dict[str, RuleSet] = default(dict)
+    artifacts: Dict[str, ArtifactBlueprint] = default(dict)
     import_builtins: bool = True
 
     def build_artifact(self, name: str) -> Artifact:
@@ -41,4 +42,5 @@ class Rulebook:
         return artifact
 
     def build_all(self):
-        return {name: self.build_artifact(name) for name in self.artifacts.keys()}
+        return {name: self.build_artifact(name)
+                for name in self.artifacts.keys()}

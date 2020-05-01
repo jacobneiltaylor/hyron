@@ -1,13 +1,13 @@
-import os
 
-from .application import Application, PortApplication
+from .application import Application
 from .application_group import ApplicationGroup
+
 
 class ApplicationLibrary:
     def __init__(self):
         self._apps = {}
         self._appgroups = {}
-        
+
     def register_app(self, name: str, app: Application):
         app.metadata["name"] = name
         self._apps[name] = app

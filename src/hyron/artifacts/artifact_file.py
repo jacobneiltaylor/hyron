@@ -1,5 +1,6 @@
 from io import BytesIO
 
+
 class ArtifactFile:
     def __init__(self, name, encoding):
         self.name = name
@@ -12,7 +13,7 @@ class ArtifactFile:
             self.buf.write(callback())
         else:
             raise RuntimeError(f"File '{self.name}' is already closed")
-    
+
     def write_bytes(self, data: bytes):
         self._write(lambda: data)
 

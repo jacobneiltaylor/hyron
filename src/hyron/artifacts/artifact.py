@@ -5,7 +5,7 @@ from ..constants import DEF_ENCODING
 
 
 class Artifact:
-    def __init__(self, encoding = DEF_ENCODING):
+    def __init__(self, encoding=DEF_ENCODING):
         self.encoding = encoding
         self.meta = {}
         self.files = {}
@@ -41,7 +41,7 @@ class Artifact:
         for k, v in manifest["files"].items():
             file_obj = artifact[k]
             file_obj.write_bytes(decode(v))
-        
+
         artifact.close_all()
 
         return artifact

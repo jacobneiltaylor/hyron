@@ -67,6 +67,6 @@ def get_asset_filename(name, ext="txt"):
 
 
 def on_dict_match(dic, key, value, if_retval, else_retval):
-        if key in dic and dic[key] == value:
-            return if_retval
-        return else_retval
+    if key in dic and dic[key] == value:
+        return if_retval
+    return else_retval

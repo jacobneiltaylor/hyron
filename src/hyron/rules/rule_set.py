@@ -1,8 +1,7 @@
-from typing import Generator, List
+from typing import List
 from .rule import Rule
 from ..prefixlists.prefix_list import PrefixList
-from ..apps.application import ApplicationContainer
-from ..constants import ACTION_PERMIT
+
 
 class RuleSet:
     def __init__(self, rules=[], **meta):

@@ -3,11 +3,10 @@ from copy import deepcopy
 from typing import List
 from ipaddress import ip_network
 from collections import defaultdict
-from .zone_providers import JunosSrxZoneProvider, DefaultJunosSrxZoneProvider
+from .zone_providers import JunosSrxZoneProvider
 from ..renderer import Renderer
 from ...apps import Application, PortApplication
 from ...rules import Rule
-from ...helpers import as_list
 from ...constants import ACTION_PERMIT, ACTION_REJECT, ACTION_IGNORE
 
 
@@ -41,11 +40,14 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
         self.zone_provider = self._get_zone_provider()
 
     def _get_zone_provider(self) -> JunosSrxZoneProvider:
-        return JunosSrxZoneProvider.get(self.config.get("jsrx-zone-provider", "default"))
+        return JunosSrxZoneProvider.get(
+            self.config.get(
+                "jsrx-zone-provider",
+                "default"))
 
     def build_address_object(self, prefix: str) -> str:
         net = ip_network(prefix)
-        name = f"pfx{net.version}-{net.network_address.compressed}-{net.prefixlen}"
+        name = f"pfx{net.version}-{net.network_address.compressed}-{net.prefixlen}"  # noqa
 
         if name not in self.address_index:
             address_object = {
@@ -57,10 +59,13 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
 
         return name
 
-    def build_address_set_object(self, set_name, address_names: List[str]) -> str:
+    def build_address_set_object(
+            self,
+            set_name,
+            address_names: List[str]) -> str:
         address_set_object = {
             "name": set_name,
-            "address": [{"name":name} for name in address_names]
+            "address": [{"name": name} for name in address_names]
         }
         self.address_set_objects.append(address_set_object)
         return address_set_object["name"]
@@ -104,7 +109,8 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
 
     def _preprocess_prefix_list(self, pfx_list):
         names = [self.build_address_object(pfx) for pfx in pfx_list.prefixes]
-        self.address_set_index[pfx_list.name] = self.build_address_set_object(pfx_list.name, names)
+        self.address_set_index[pfx_list.name] = self.build_address_set_object(
+            pfx_list.name, names)
 
     def _preprocess_app(self, app):
         self.application_index[app.name] = self.build_application_object(app)
@@ -117,7 +123,8 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
         seq = len(self.global_policies) + 1
 
         app_names = map(lambda x: x.name, rule.applications.apps)
-        match = self.build_policy_match(rule.source.name, rule.destination.name, app_names)
+        match = self.build_policy_match(
+            rule.source.name, rule.destination.name, app_names)
         then = self.build_policy_then(rule.action)
 
         if is_global:
@@ -137,7 +144,8 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
         if is_global:
             self.global_policies.append(policy_object)
         else:
-            self.zonal_policies[from_zones[0]][to_zones[0]].append(policy_object)
+            self.zonal_policies[from_zones[0]
+                                ][to_zones[0]].append(policy_object)
 
     def _build_artifacts(self):
         zonal_policy_objects = []
@@ -149,21 +157,20 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
                     "to-zone-name": to_zone,
                     "policy": policies
                 })
-        
 
         artifact = {
             "applications": {
                 "application": self.application_objects
             },
             "security": {
-                "address-book":[
+                "address-book": [
                     {
                         "name": "global",
                         "address": self.address_objects,
                         "address-set": self.address_set_objects
                     }
                 ],
-                "policies": { 
+                "policies": {
                     "policy": zonal_policy_objects
                 }
             }
@@ -175,11 +182,13 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
             }
 
         if not artifact["applications"]["application"]:
-            del artifact["applications"] # Workaround bug in Junos for handling empty applications in JSON format
+            # Workaround bug in Junos for handling empty applications in JSON
+            # format
+            del artifact["applications"]
 
         if "apply-group" in self.config:
             applygrp = deepcopy(artifact)
             applygrp["name"] = str(self.config["apply-group"])
-            artifact = {"groups":[applygrp]}
+            artifact = {"groups": [applygrp]}
 
         return json.dumps({"configuration": artifact}, indent=4)

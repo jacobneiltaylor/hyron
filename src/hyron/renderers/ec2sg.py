@@ -2,7 +2,7 @@ import json
 from ipaddress import ip_network
 
 from .renderer import Renderer
-from ..rules.rule_set import RuleSet, Rule
+from ..rules.rule_set import Rule
 from ..prefixlists.prefix_list import PrefixList
 from ..apps.application import Application, PortApplication
 from ..constants import ACTION_PERMIT
@@ -10,6 +10,7 @@ from ..constants import ACTION_PERMIT
 __all__ = [
     "AwsEc2SecurityGroupRenderer"
 ]
+
 
 def _handle_app(app: Application):
     return {
@@ -47,7 +48,7 @@ def _build_ranges(desc, pfxlist: PrefixList):
     for prefix in pfxlist.prefixes:
         ver = ip_network(prefix).version
         range_type = _LIST_NAMES[ver]
-        
+
         if range_type not in ranges:
             ranges[range_type] = []
 
@@ -75,12 +76,14 @@ class AwsEc2SecurityGroupRenderer(Renderer, register="ec2sg"):
     def _initialise(self):
         self.permissions = []
         self.egress = self._assert_metadata("direction", "egress", True, False)
-        self.description = self.metadata.get("description", self.config.get("description", "autosec"))
+        self.description = self.metadata.get(
+            "description", self.config.get(
+                "description", "autosec"))
 
     def _process_rule(self, rule: Rule):
         if rule.action == ACTION_PERMIT:
             for app in rule.applications.apps:
-                interesting_side = "source" 
+                interesting_side = "source"
                 direction = "from"
 
                 if self.egress:
@@ -91,7 +94,10 @@ class AwsEc2SecurityGroupRenderer(Renderer, register="ec2sg"):
                 desc = f"{self.description}_{app.name}_{direction}_{pfxs.name}"
 
                 permission = {}
-                permission.update(_APP_HANDLERS.get(app.protocol_id, _handle_app)(app))
+                permission.update(
+                    _APP_HANDLERS.get(
+                        app.protocol_id,
+                        _handle_app)(app))
                 permission.update(_build_ranges(desc, pfxs))
                 self.permissions.append(permission)
 

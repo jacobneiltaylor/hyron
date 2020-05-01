@@ -2,6 +2,7 @@ from abc import ABC, abstractproperty
 from typing import List
 from ..constants import PROTOCOLS
 
+
 class ApplicationContainer(ABC):
     @abstractproperty
     def apps(self) -> List["Application"]:
@@ -19,7 +20,7 @@ class ApplicationContainer(ABC):
         return hash(self.deterministic_name)
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} {self.deterministic_name} at {hex(id(self))}>"
+        return f"<{self.__class__.__name__} {self.deterministic_name} at {hex(id(self))}>"  # noqa
 
     def __eq__(self, other):
         return self._unique_name == other._unique_name
@@ -84,7 +85,7 @@ class PortApplication(Application):
 
     def __le__(self, app):
         if isinstance(app, type(self)):
-            return self.protocol == app.protocol and self.to_port in app and self.from_port in app
+            return self.protocol == app.protocol and self.to_port in app and self.from_port in app  # noqa
         return False
 
     @classmethod
@@ -115,4 +116,4 @@ class PortApplication(Application):
     def deterministic_name(self):
         if self.from_port == self.to_port:
             return f"{super().deterministic_name}_port_{self.from_port}"
-        return f"{super().deterministic_name}_ports_{self.from_port}_to_{self.to_port}"
+        return f"{super().deterministic_name}_ports_{self.from_port}_to_{self.to_port}"  # noqa

@@ -1,12 +1,10 @@
 from .application import Application, PortApplication
-from .application_group import ApplicationGroup
 from .application_library import ApplicationLibrary
-from ..helpers import load_yaml
 
 
 _FROMPORT = "from-port"
 _TOPORT = "to-port"
-_PORT = "port"        
+_PORT = "port"
 _PORT_PROTOCOLS = {
     Application.TCP,
     Application.UDP
@@ -55,4 +53,3 @@ class ApplicationLibraryLoader:
         self._load_apps(config["apps"], lib)
         self._load_appgroups(config["appgroups"], lib)
         return lib
-

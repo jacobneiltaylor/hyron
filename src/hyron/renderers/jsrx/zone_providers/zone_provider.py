@@ -1,7 +1,8 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Tuple, List
 from plugable import Plugable
 from ....helpers import get_plural_dict_item, as_list
+
 
 class JunosSrxZoneProvider(Plugable):
     META_CONTEXT = "jsrx_context"
@@ -39,7 +40,7 @@ class JunosSrxZoneProvider(Plugable):
     def _get_explicit_zones(cls, meta: dict) -> bool:
         from_zones = get_plural_dict_item(meta, cls.META_FROM_ZONE)
         to_zones = get_plural_dict_item(meta, cls.META_TO_ZONE)
-        
+
         return (from_zones, to_zones)
 
     @abstractmethod
@@ -50,9 +51,10 @@ class JunosSrxZoneProvider(Plugable):
     def _get_zones(self, rule) -> Tuple[List[str]]:
         pass
 
+
 class DefaultJunosSrxZoneProvider(JunosSrxZoneProvider, register="default"):
     def _is_global(self, rule):
         return True
 
     def _get_zones(self, rule):
-        return ([],[])
+        return ([], [])

@@ -1,15 +1,14 @@
-import os.path as path
-from typing import List
 from metaloader import FlatLoader, YamlSerialisation, LoaderContext
 from .rule_builder import RuleBuilder, RuleSetBuilder
 from .rulebook import Rulebook
 from ..apps import ApplicationLibraryLoader
 from ..artifacts import ArtifactBlueprint
-from ..helpers import load_yaml, get_builtin_filename, get_base_dir, get_plural_dict_item
+from ..helpers import get_builtin_filename, load_yaml
 from ..constants import LOADER_SCHEMA
 
+
 class RulebookLoader:
-    def __init__(self, fs = None):
+    def __init__(self, fs=None):
         self._cfgldr = FlatLoader(YamlSerialisation())
         self._cfgldr.set_schema(LOADER_SCHEMA)
         self._appldr = ApplicationLibraryLoader()
@@ -56,13 +55,15 @@ class RulebookLoader:
         def appgroups(dct):
             return dct["appdefs"]["appgroups"]
 
-        self._prepare_dict(objects, ["appdefs","prefixlists"])
-        self._prepare_dict(objects["appdefs"], ["apps","appgroups"])
+        self._prepare_dict(objects, ["appdefs", "prefixlists"])
+        self._prepare_dict(objects["appdefs"], ["apps", "appgroups"])
 
         if rulebook.import_builtins:
             apps(objects).update(apps(self._builtins["apps"]["objects"]))
-            appgroups(objects).update(appgroups(self._builtins["apps"]["objects"]))
-            objects["prefixlists"].update(self._builtins["prefixlists"]["objects"]["prefixlists"])
+            appgroups(objects).update(
+                appgroups(self._builtins["apps"]["objects"]))
+            objects["prefixlists"].update(
+                self._builtins["prefixlists"]["objects"]["prefixlists"])
 
         for name, config in objects.items():
             self._get_include_handler(name)(config, rulebook)
@@ -73,7 +74,7 @@ class RulebookLoader:
         for name, rule in rules.items():
             builder.add(name, rule)
         builder.resolve(rulebook)
-    
+
     @staticmethod
     def _load_rulesets(rulesets: dict, rulebook: Rulebook):
         builder = RuleSetBuilder()

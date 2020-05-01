@@ -5,25 +5,24 @@ from ..rules.rule_set import RuleSet, Rule
 from ..apps.application import Application
 from ..prefixlists.prefix_list import PrefixList
 from ..helpers import on_dict_match
-from ..artifacts import Artifact
 
 
 class Renderer(Plugable):
     """
-        Renderers take compiled rule-set objects and output one or more "artifacts",
-        which are a text-based representation of rules in a format native
-        to a device or system capable of enforcing them.
+        Renderers take compiled rule-set objects and output one or more
+        "artifacts", which are a text-based representation of rules in a
+        format native to a device or system capable of enforcing them.
     """
-    BINARY = False # Set this flag to true if your Renderer outputs binary
+    BINARY = False  # Set this flag to true if your Renderer outputs binary
 
     def __init__(self, **config):
         self.config = config
         self.metadata = None
         self.preprocess_entities = False
 
-    def build(self, rule_set: RuleSet) -> Dict[str,str]:
+    def build(self, rule_set: RuleSet) -> Dict[str, str]:
         self.metadata = rule_set.metadata
-        
+
         self._initialise()
 
         if self.preprocess_entities:
@@ -56,5 +55,3 @@ class Renderer(Plugable):
     @abstractmethod
     def _build_artifacts(self):
         pass
-
-

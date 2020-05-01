@@ -19,8 +19,10 @@ class AwsPrefixListDatasource(WebPrefixListDatasource, register="aws"):
 
         prefixes = []
 
-        prefixes += [pfx["ip_prefix"] for pfx in data["prefixes"] if self._is_valid(pfx)]
-        prefixes += [pfx["ipv6_prefix"] for pfx in data["ipv6_prefixes"] if self._is_valid(pfx)]
+        prefixes += [pfx["ip_prefix"]
+                     for pfx in data["prefixes"] if self._is_valid(pfx)]
+        prefixes += [pfx["ipv6_prefix"]
+                     for pfx in data["ipv6_prefixes"] if self._is_valid(pfx)]
 
         return prefixes
 

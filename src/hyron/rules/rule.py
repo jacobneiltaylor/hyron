@@ -3,8 +3,15 @@ from ..constants import ACTION_PERMIT
 from ..prefixlists.prefix_list import PrefixList
 from ..apps.application import ApplicationContainer
 
+
 class Rule:
-    def __init__(self, src: PrefixList, dst: PrefixList, apps: ApplicationContainer, action=ACTION_PERMIT, **meta):
+    def __init__(
+            self,
+            src: PrefixList,
+            dst: PrefixList,
+            apps: ApplicationContainer,
+            action=ACTION_PERMIT,
+            **meta):
         self.source = src
         self.destination = dst
         self.applications = apps

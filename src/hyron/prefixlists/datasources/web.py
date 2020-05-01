@@ -7,10 +7,12 @@ from ...helpers import get_plural_dict_item
 
 class WebPrefixListDatasource(PrefixListDatasource, register="web"):
     FORMAT_HANDLERS = {
-        "text": lambda x: [i for i in map(lambda y: y.strip(), x.splitlines()) if i[0] != "#"],
+        "text": lambda x: [
+            i for i in map(
+                lambda y: y.strip(),
+                x.splitlines()) if i[0] != "#"],
         "csv": lambda x: x.strip().split(","),
-        "json": lambda x: json.loads(x)
-    }
+        "json": lambda x: json.loads(x)}
 
     def __init__(self, **kwargs):
         self._origins = get_plural_dict_item(kwargs, "origin")

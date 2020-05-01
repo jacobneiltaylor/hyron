@@ -1,4 +1,5 @@
-from .application import Application, ApplicationContainer
+from .application import ApplicationContainer
+
 
 class ApplicationGroup(ApplicationContainer):
     def __init__(self, apps=[]):

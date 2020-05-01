@@ -5,8 +5,10 @@ import radix
 
 from ..helpers import optimise_prefixes
 
+
 def _explode(nets: list):
     return list(map(lambda x: x.exploded, nets))
+
 
 class PrefixList:
     NAME_PREFIX = "nets"
@@ -74,4 +76,3 @@ class PrefixList:
     def name(self):
         name = self.metadata["name"]
         return f"{self.NAME_PREFIX}_{name}"
-

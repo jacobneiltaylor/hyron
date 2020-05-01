@@ -1,10 +1,10 @@
 from .rulebook import Rulebook
 from ..rules import Rule, RuleSet
-from ..apps import ApplicationLibrary
-from ..prefixlists import PrefixList, PrefixListLoader
+from ..prefixlists import PrefixList
 from ..constants import ACTION_PERMIT, ACTIONS
 
 _DEF_PFX = PrefixList(["0.0.0.0/0", "::/0"], name="any")
+
 
 class RuleBuilder:
     def __init__(self):
@@ -18,7 +18,7 @@ class RuleBuilder:
         app = rule["app"]
 
         assert(action in ACTIONS)
-        
+
         self._proto_rules[name] = (src, dst, app, action, meta)
 
     def resolve(self, rulebook: Rulebook):
@@ -34,23 +34,31 @@ class RuleBuilder:
             if dst:
                 dst_pfxs = rulebook.prefixlists[dst]
 
-            rules[name] = Rule(src_pfxs, dst_pfxs, rulebook.apps[app], action, name=name, **meta)
-        
+            rules[name] = Rule(
+                src_pfxs,
+                dst_pfxs,
+                rulebook.apps[app],
+                action,
+                name=name,
+                **meta)
+
         self._proto_rules = {}
         rulebook.rules.update(rules)
+
 
 class RuleSetBuilder:
     def __init__(self):
         self._proto_rule_sets = {}
 
     def add(self, name: str, ruleset: dict):
-        self._proto_rule_sets[name] = (ruleset["rules"], ruleset.get("meta", {}))
+        self._proto_rule_sets[name] = (
+            ruleset["rules"], ruleset.get("meta", {}))
 
     def resolve(self, rulebook: Rulebook):
         rule_sets = {
-            setname: RuleSet([rulebook.rules[name] for name in rulenames], **meta) 
+            setname: RuleSet([rulebook.rules[name] for name in rulenames], **meta)  # noqa
             for setname, (rulenames, meta) in self._proto_rule_sets.items()
         }
-            
+
         self._proto_rule_sets = {}
         rulebook.rulesets.update(rule_sets)

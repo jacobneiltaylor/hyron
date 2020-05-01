@@ -2,7 +2,6 @@ from copy import copy
 
 from .prefix_list import PrefixList
 from .prefix_list_datasource import PrefixListDatasource
-from ..helpers import load_yaml, get_builtin_filename
 
 
 class PrefixListLoader:
@@ -20,8 +19,11 @@ class PrefixListLoader:
                 kwargs = copy(ds_config)
                 del kwargs["type"]
                 if ds_type == "merge":
-                    kwargs["loader"] = self # merge pfx lists require access to the loader to reference other prefix lists
-                self._datasources[name] = PrefixListDatasource.get(ds_type, **kwargs)
+                    # merge pfx lists require access to the loader to reference
+                    # other prefix lists
+                    kwargs["loader"] = self
+                self._datasources[name] = PrefixListDatasource.get(
+                    ds_type, **kwargs)
 
     @property
     def available(self):
