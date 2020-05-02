@@ -1,4 +1,5 @@
 import os
+import json
 
 TEST_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
@@ -21,3 +22,12 @@ PREFIX_LIST_TESTS = {
         "not": ["18.232.234.12/32"]
     }
 }
+
+TEST_ARTIFACT_CONTENT = json.dumps({
+    "hello": "world",
+    "foo": {
+        "bar": ["baz"]
+    }
+})
+
+TEST_ARTIFACT_MANIFEST_CONTENT = "eyJoZWxsbyI6ICJ3b3JsZCIsICJmb28iOiB7ImJhciI6IFsiYmF6Il19fQ=="  # noqa
