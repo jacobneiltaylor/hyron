@@ -19,7 +19,7 @@ def _get_ssh_app():
 
 def _get_dns_app():
     return hyron.apps.PortApplication.tcp_port(53)
-    
+
 
 def _get_icmp4_app():
     return hyron.apps.Application(1)
@@ -36,7 +36,7 @@ def _get_anyudp_app():
 def _get_demon_app():
     return hyron.apps.Application(666)
 
-    
+
 def test_builtin_apps_set_access():
     ldr = _get_app_loader()
 
@@ -50,6 +50,7 @@ def test_builtin_apps_nonexist():
 
     with pytest.raises(KeyError):
         ldr[TEST_NONEXIST_APP]
+
 
 def test_builtin_names():
     ldr = _get_app_loader()

@@ -48,7 +48,6 @@ def test_artifact_archive():
 
     with tempfile.TemporaryDirectory() as working_tmpdir:
         archive_file = artifact.to_archive(working_tmpdir)
-        
         with tempfile.TemporaryDirectory() as target_tmpdir:
             shutil.unpack_archive(archive_file, target_tmpdir, "gztar")
             with os.scandir(target_tmpdir) as entries:
