@@ -70,3 +70,9 @@ def on_dict_match(dic, key, value, if_retval, else_retval):
     if key in dic and dic[key] == value:
         return if_retval
     return else_retval
+
+
+def resolve_working_directory(directory):
+    if not directory:
+        return os.getcwd()
+    return directory

@@ -6,15 +6,15 @@ from ..constants import PROTOCOLS
 class ApplicationContainer(ABC):
     @abstractproperty
     def apps(self) -> List["Application"]:
-        pass
+        raise NotImplementedError()
 
     @abstractproperty
     def name(self) -> str:
-        pass
+        raise NotImplementedError()
 
     @abstractproperty
     def deterministic_name(self) -> str:
-        pass
+        raise NotImplementedError()
 
     def __hash__(self):
         return hash(self.deterministic_name)
@@ -105,15 +105,17 @@ class PortApplication(Application):
         return cls(cls.UDP, from_port, to_port)
 
     @property
+    def _name_suffix(self):
+        if self.from_port == self.to_port:
+            return f"port_{self.from_port}"
+        return f"ports_{self.from_port}_to_{self.to_port}"
+
+    @property
     def name(self):
         if "name" in self.metadata:
             return self.metadata["name"]
-        elif self.from_port == self.to_port:
-            return f"{super().name}_port_{self.from_port}"
-        return f"{super().name}_ports_{self.from_port}_to_{self.to_port}"
+        return super().name
 
     @property
     def deterministic_name(self):
-        if self.from_port == self.to_port:
-            return f"{super().deterministic_name}_port_{self.from_port}"
-        return f"{super().deterministic_name}_ports_{self.from_port}_to_{self.to_port}"  # noqa
+        return f"{super().deterministic_name}_{self._name_suffix}"  # noqa

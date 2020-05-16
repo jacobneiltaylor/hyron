@@ -26,8 +26,9 @@ class Rulebook:
         artifactbp = self.artifacts[name]
         artifact = Artifact(self.encoding)
         artifact.meta = deepcopy(artifactbp.meta)
-        artifact.meta["_title"] = self.title
-        artifact.meta["_owner"] = self.owner
+        artifact.meta["_rulebook_title"] = self.title
+        artifact.meta["_rulebook_owner"] = self.owner
+        artifact.meta["_artifact_name"] = artifactbp.name
 
         for name, filebp in artifactbp.files.items():
             renderer = Renderer.get(filebp.renderer, **filebp.config)

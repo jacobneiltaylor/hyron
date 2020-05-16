@@ -31,3 +31,5 @@ TEST_ARTIFACT_CONTENT = json.dumps({
 })
 
 TEST_ARTIFACT_MANIFEST_CONTENT = "eyJoZWxsbyI6ICJ3b3JsZCIsICJmb28iOiB7ImJhciI6IFsiYmF6Il19fQ=="  # noqa
+
+TEST_NONEXIST_APP = "__this_app_shouldn't_exist__"

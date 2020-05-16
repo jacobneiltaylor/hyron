@@ -1,4 +1,5 @@
 from io import BytesIO
+from typing import BinaryIO
 
 
 class ArtifactFile:
@@ -26,3 +27,10 @@ class ArtifactFile:
     def get_contents(self):
         self.close()
         return self.buf.getvalue()
+
+    def dump(self, fh: BinaryIO):
+        fh.write(self.get_contents())
+
+    def load(self, fh: BinaryIO):
+        self.write_bytes(fh.read())
+        self.close()
