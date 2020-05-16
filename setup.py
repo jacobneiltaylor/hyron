@@ -16,7 +16,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where='src'),
     package_data={
         "hyron": [
-            "builtins/*.yaml",
+            "builtin/*.yaml",
             "assets/*"
         ]
     },
