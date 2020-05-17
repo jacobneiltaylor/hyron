@@ -16,7 +16,7 @@ def _get_prefixlist_loader():
         prefix_list_config["objects"]["prefixlists"])
 
 
-def test_prefixlists():
+def test_prefixlist_providers():
     prefixlists = _get_prefixlist_loader()
     expected = len(_get_builtin_prefixlist_config()["objects"]["prefixlists"])
 
@@ -36,3 +36,15 @@ def test_prefixlists():
     # Merge providers will trigger loading of
     # other providers, therefore >= is used here
     assert(len(prefixlists.loaded) >= len(testconstants.PREFIX_LIST_TESTS))
+
+
+def test_prefixlist():
+    prefixlists = _get_prefixlist_loader()
+
+    private = prefixlists["private"]
+
+    assert(len(private.ipv4_prefixes) == 3)
+    assert(len(private.ipv6_prefixes) == 1)
+
+    assert("10.1.2.3" in private)
+    assert("1.1.1.1" not in private)
