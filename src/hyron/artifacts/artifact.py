@@ -4,6 +4,7 @@ import shutil
 import tempfile
 from copy import deepcopy
 from base64 import b64encode, b64decode
+from typing import Dict
 from .artifact_file import ArtifactFile
 from ..constants import DEF_ENCODING
 from ..helpers import resolve_working_directory
@@ -13,7 +14,7 @@ class Artifact:
     def __init__(self, encoding=DEF_ENCODING):
         self.encoding = encoding
         self.meta = {}
-        self.files = {}
+        self.files: Dict[str, ArtifactFile]  = {}
 
     def __getitem__(self, key) -> ArtifactFile:
         if key not in self.files:

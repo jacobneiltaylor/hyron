@@ -23,14 +23,14 @@ class Rulebook:
     import_builtins: bool = True
 
     def build_artifact(self, name: str) -> Artifact:
-        artifactbp = self.artifacts[name]
+        blueprint = self.artifacts[name]
         artifact = Artifact(self.encoding)
-        artifact.meta = deepcopy(artifactbp.meta)
+        artifact.meta = deepcopy(blueprint.meta)
         artifact.meta["_rulebook_title"] = self.title
         artifact.meta["_rulebook_owner"] = self.owner
-        artifact.meta["_artifact_name"] = artifactbp.name
+        artifact.meta["_artifact_name"] = blueprint.name
 
-        for name, filebp in artifactbp.files.items():
+        for name, filebp in blueprint.files.items():
             renderer = Renderer.get(filebp.renderer, **filebp.config)
             artifact_file = artifact[name]
             data = renderer.build(self.rulesets[filebp.ruleset])
