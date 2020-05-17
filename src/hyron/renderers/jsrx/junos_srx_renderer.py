@@ -1,5 +1,4 @@
 import json
-from copy import deepcopy
 from typing import List
 from ipaddress import ip_network
 from collections import defaultdict
@@ -181,14 +180,16 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
                 "policy": self.global_policies
             }
 
+        # Workaround bug in Junos for handling empty lists in JSON format
         if not artifact["applications"]["application"]:
-            # Workaround bug in Junos for handling empty applications in JSON
-            # format
             del artifact["applications"]
 
+        if not artifact["security"]["policies"]["policy"]:
+            del artifact["security"]["policies"]["policy"]
+
         if "apply-group" in self.config:
-            applygrp = deepcopy(artifact)
-            applygrp["name"] = str(self.config["apply-group"])
+            applygrp = {"name": str(self.config["apply-group"])}
+            applygrp.update(artifact)
             artifact = {"groups": [applygrp]}
 
         return json.dumps({"configuration": artifact}, indent=4)
