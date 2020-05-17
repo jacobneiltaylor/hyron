@@ -14,7 +14,7 @@ class Artifact:
     def __init__(self, encoding=DEF_ENCODING):
         self.encoding = encoding
         self.meta = {}
-        self.files: Dict[str, ArtifactFile]  = {}
+        self.files: Dict[str, ArtifactFile] = {}
 
     def __getitem__(self, key) -> ArtifactFile:
         if key not in self.files:
