@@ -79,7 +79,7 @@ class AwsEc2SecurityGroupRenderer(Renderer, register="ec2sg"):
         self.egress = self.config.get("direction", "ingress") == "egress"
         self.description = self.metadata.get(
             "description", self.config.get(
-                "description", "autosec"))
+                "description", "hyron"))
 
     def _preprocess_prefix_list(self, prefixes):
         pass

@@ -15,7 +15,7 @@ class ObjectsStanzaHandler(DictStanzaHandler, register="objects"):
         if "prefixlists" in new_data:
             stanza_data["prefixlists"].update(new_data["prefixlists"])
         if "appdefs" in new_data:
-            appdefs = new_data["objects"]
-            for key in ("apps", "appdefs"):
+            appdefs = new_data["appdefs"]
+            for key in ("apps", "appgroups"):
                 if key in appdefs:
                     stanza_data["appdefs"][key].update(appdefs[key])
