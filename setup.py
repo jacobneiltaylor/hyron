@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hyron",
-    version="0.0.5",
+    version="0.0.6",
     author="Jacob Neil Taylor",
     author_email="me@jacobtaylor.id.au",
     description="The Network ACL Automation Framework",

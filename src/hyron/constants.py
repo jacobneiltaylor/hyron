@@ -1,3 +1,5 @@
+from .objects_stanza_handler import ObjectsStanzaHandler  # noqa
+
 PROTOCOLS = {
     1: 'ICMP',
     4: 'TUNIP4',
@@ -22,7 +24,7 @@ ACTIONS = [
 
 DICT = "dict"
 XDICT = {
-    "name": "dict",
+    "name": DICT,
     "exclusive": True,
 }
 
@@ -31,7 +33,7 @@ LOADER_SCHEMA = {
     "artifacts": XDICT,
     "rules": DICT,
     "rulesets": DICT,
-    "objects": DICT,
+    "objects": "objects",
 }
 
 DEF_ENCODING = "utf8"
