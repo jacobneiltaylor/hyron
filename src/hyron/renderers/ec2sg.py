@@ -70,15 +70,29 @@ class AwsEc2SecurityGroupRenderer(Renderer, register="ec2sg"):
     def __init__(self, **config):
         super().__init__(**config)
         self.egress = False
-        self.permissions = []
+        self.preprocess_entities = True
         self.description = ""
+        self.application_entries = {}
 
     def _initialise(self):
         self.permissions = []
-        self.egress = self._assert_metadata("direction", "egress", True, False)
+        self.egress = self.config.get("direction", "ingress") == "egress"
         self.description = self.metadata.get(
             "description", self.config.get(
                 "description", "autosec"))
+
+    def _preprocess_prefix_list(self, prefixes):
+        pass
+
+    def _preprocess_app(self, app: Application):
+        entry = {
+            "IpRanges": [],
+            "Ipv6Ranges": [],
+            "PrefixListIds": [],
+            "UserIdGroupPairs": [],
+        }
+        entry.update(_APP_HANDLERS.get(app.protocol_id, _handle_app)(app))
+        self.application_entries[app.name] = entry
 
     def _process_rule(self, rule: Rule):
         if rule.action == ACTION_PERMIT:
@@ -93,16 +107,14 @@ class AwsEc2SecurityGroupRenderer(Renderer, register="ec2sg"):
                 pfxs = getattr(rule, interesting_side)
                 desc = f"{self.description}_{app.name}_{direction}_{pfxs.name}"
 
-                permission = {}
-                permission.update(
-                    _APP_HANDLERS.get(
-                        app.protocol_id,
-                        _handle_app)(app))
-                permission.update(_build_ranges(desc, pfxs))
-                self.permissions.append(permission)
+                permission = self.application_entries[app.name]
+                ranges = _build_ranges(desc, pfxs)
+
+                for range_type in ("IpRanges", "Ipv6Ranges"):
+                    permission[range_type] += ranges.get(range_type, [])
 
     def _build_artifacts(self):
-        return json.dumps(self.permissions, indent=4)
+        return json.dumps(list(self.application_entries.values()), indent=4)
 
     @classmethod
     def _format_protocol(cls, protocol):
