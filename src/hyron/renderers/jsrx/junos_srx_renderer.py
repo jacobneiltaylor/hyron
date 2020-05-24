@@ -120,6 +120,7 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
         is_global = self.zone_provider.is_global(rule)
         ctx = "global"
         seq = len(self.global_policies) + 1
+        policy_list = self.global_policies
 
         app_names = map(lambda x: x.name, rule.applications.apps)
         match = self.build_policy_match(
@@ -130,8 +131,9 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
             match["from-zone"] = from_zones if from_zones else ["any"]
             match["to-zone"] = to_zones if to_zones else ["any"]
         else:
+            policy_list = self.zonal_policies[from_zones[0]][to_zones[0]]
             ctx = f"{from_zones[0]}_{to_zones[0]}"
-            seq = len(self.zonal_policies[ctx]) + 1
+            seq = len(policy_list) + 1
 
         policy_object = {
             "name": f"{ctx}_{seq}",
@@ -140,11 +142,7 @@ class JunosSrxRenderer(Renderer, register="jsrx"):
             "then": then
         }
 
-        if is_global:
-            self.global_policies.append(policy_object)
-        else:
-            self.zonal_policies[from_zones[0]
-                                ][to_zones[0]].append(policy_object)
+        policy_list.append(policy_object)
 
     def _build_artifacts(self):
         zonal_policy_objects = []
