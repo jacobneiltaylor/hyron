@@ -2,7 +2,7 @@ import os
 from dataclasses import field
 import radix
 
-from ruamel import yaml
+from ruamel.yaml import YAML
 
 
 def _load(filename, handler):
@@ -51,7 +51,8 @@ def get_plural_dict_item(dic, name, single_handler=lambda x: [x]):
 
 
 def load_yaml(filename):
-    return _load(filename, lambda x: yaml.load(x, yaml.Loader))
+    yaml = YAML(typ="unsafe", pure=True)
+    return _load(filename, lambda x: yaml.load(x))
 
 
 def load_text(filename):

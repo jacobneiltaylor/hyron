@@ -6,10 +6,6 @@ import radix
 from ..helpers import optimise_prefixes
 
 
-def _explode(nets: list):
-    return list(map(lambda x: x.exploded, nets))
-
-
 class PrefixList:
     NAME_PREFIX = "nets"
 
@@ -24,6 +20,10 @@ class PrefixList:
             self._radix.add(prefix)
         self.metadata = meta
         self._repr = self._calculate_repr()
+
+    @staticmethod
+    def _explode(nets: list):
+        return list(map(lambda x: x.exploded, nets))
 
     def _calculate_repr(self):
         joined_pfxs = ",".join(self.prefixes)
@@ -53,8 +53,8 @@ class PrefixList:
         for net_list in nets.values():
             net_list.sort()
 
-        self._ipv4_prefixes = _explode(nets[4])
-        self._ipv6_prefixes = _explode(nets[6])
+        self._ipv4_prefixes = self._explode(nets[4])
+        self._ipv6_prefixes = self._explode(nets[6])
 
         self._prefixes = self._ipv4_prefixes + self._ipv6_prefixes
 

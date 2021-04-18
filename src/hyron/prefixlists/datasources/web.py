@@ -6,6 +6,10 @@ from ...helpers import get_plural_dict_item
 
 
 class WebPrefixListDatasource(PrefixListDatasource, register="web"):
+    """
+        This datasource allows users to retrieve prefix list data from
+        web locations
+    """
     FORMAT_HANDLERS = {
         "text": lambda x: [
             i for i in map(

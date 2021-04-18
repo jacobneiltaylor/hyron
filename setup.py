@@ -31,5 +31,6 @@ setuptools.setup(
         "metaloader",
         "plugable",
         "py-radix",
+        "py-mini-racer",
     ],
 )

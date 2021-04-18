@@ -5,6 +5,9 @@ from ..prefix_list_datasource import PrefixListDatasource
 
 
 class MergePrefixListDatasource(PrefixListDatasource, register="merge"):
+    """
+        This datasource allows users to merge other datasources
+    """
     def __init__(self, names, loader: PrefixListLoader):
         self._names = names
         self._loader = loader

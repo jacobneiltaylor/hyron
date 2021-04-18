@@ -2,11 +2,9 @@
   objects:
     prefixlists:
       cloudflare:
-        type: web
-        origins:
-          - https://www.cloudflare.com/ips-v4
-          - https://www.cloudflare.com/ips-v6
-        format: text
+        type: jsonquery
+        origin: https://api.cloudflare.com/client/v4/ips
+        query: (data) => (data.result.ipv4_cidrs.concat(data.result.ipv6_cidrs))
       
       fullbogons-v4:
         type: web

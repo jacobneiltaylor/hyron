@@ -3,6 +3,11 @@ from ...constants import AWS_IP_RANGES
 
 
 class AwsPrefixListDatasource(WebPrefixListDatasource, register="aws"):
+    """
+        This extension of the WebPrefixListDatasource allows users
+        to easily reference and filter prefixes related to the
+        various services and regions of Amazon Web Services
+    """
     def __init__(self, region=None, service=None):
         self._region = region
         self._service = service

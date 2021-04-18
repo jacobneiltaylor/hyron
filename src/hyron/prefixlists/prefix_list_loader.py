@@ -5,6 +5,11 @@ from .prefix_list_datasource import PrefixListDatasource
 
 
 class PrefixListLoader:
+    """
+        Represents a collection of defined prefix lists.
+        Lazily loads data as required.
+    """
+
     def __init__(self, config: dict = None):
         self._datasources = {}
         self._cached = {}
