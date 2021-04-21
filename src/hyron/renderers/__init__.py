@@ -1,8 +1,8 @@
 from .renderer import Renderer
-from . import jsrx, ec2sg
+from . import junos, aws
 
 __all__ = [
     "Renderer",
-    "ec2sg",
-    "jsrx"
+    "aws",
+    "junos"
 ]

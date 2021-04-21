@@ -1,18 +1,21 @@
-from abc import ABC, abstractproperty
+from abc import ABC, abstractmethod
 from typing import List
 from ..constants import PROTOCOLS
 
 
 class ApplicationContainer(ABC):
-    @abstractproperty
+    @property
+    @abstractmethod
     def apps(self) -> List["Application"]:
         raise NotImplementedError()
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def name(self) -> str:
         raise NotImplementedError()
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def deterministic_name(self) -> str:
         raise NotImplementedError()
 

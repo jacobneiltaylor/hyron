@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hyron",
-    version="0.0.8",
+    version="0.1.0",
     author="Jacob Neil Taylor",
     author_email="me@jacobtaylor.id.au",
-    description="The Network ACL Automation Framework",
+    description="The Network Security Policy Automation Framework",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jacobneiltaylor/hyron",

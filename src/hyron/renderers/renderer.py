@@ -9,11 +9,12 @@ from ..helpers import on_dict_match
 
 class Renderer(Plugable):
     """
-        Renderers take compiled rule-set objects and output one or more
-        "artifacts", which are a text-based representation of rules in a
+        Renderers take compiled rule-set objects and output one
+        "artifact", which is a text-based representation of rules in a
         format native to a device or system capable of enforcing them.
     """
     BINARY = False  # Set this flag to true if your Renderer outputs binary
+    HINTS = {}
 
     def __init__(self, **config):
         self.config = config
@@ -34,7 +35,7 @@ class Renderer(Plugable):
         for rule in rule_set.rules:
             self._process_rule(rule)
 
-        return self._build_artifacts()
+        return self._build_artifact()
 
     def _assert_metadata(self, key, value, if_retval, else_retval):
         return on_dict_match(self.metadata, key, value, if_retval, else_retval)
@@ -53,5 +54,5 @@ class Renderer(Plugable):
         pass
 
     @abstractmethod
-    def _build_artifacts(self):
+    def _build_artifact(self):
         pass

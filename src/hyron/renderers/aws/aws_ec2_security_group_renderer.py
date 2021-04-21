@@ -1,11 +1,11 @@
 import json
 from ipaddress import ip_network
 
-from .renderer import Renderer
-from ..rules.rule_set import Rule
-from ..prefixlists.prefix_list import PrefixList
-from ..apps.application import Application, PortApplication
-from ..constants import ACTION_PERMIT
+from ..renderer import Renderer
+from ...rules.rule_set import Rule
+from ...prefixlists.prefix_list import PrefixList
+from ...apps.application import Application, PortApplication
+from ...constants import ACTION_PERMIT
 
 __all__ = [
     "AwsEc2SecurityGroupRenderer"
@@ -113,7 +113,7 @@ class AwsEc2SecurityGroupRenderer(Renderer, register="ec2sg"):
                 for range_type in ("IpRanges", "Ipv6Ranges"):
                     permission[range_type] += ranges.get(range_type, [])
 
-    def _build_artifacts(self):
+    def _build_artifact(self):
         return json.dumps(list(self.application_entries.values()), indent=4)
 
     @classmethod
