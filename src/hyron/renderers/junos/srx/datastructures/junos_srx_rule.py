@@ -55,10 +55,12 @@ class JunosSrxRule:
 
         if self.is_global:
             config_root = f"{config_root} global policy {name}"
-            for from_zone in self.from_zones:
-                cmds.add(f"{config_root} match from-zone {from_zone}")
-            for to_zone in self.from_zones:
-                cmds.add(f"{config_root} match to-zone {to_zone}")
+            if self.from_zones:
+                for from_zone in self.from_zones:
+                    cmds.add(f"{config_root} match from-zone {from_zone}")
+            if self.to_zones:
+                for to_zone in self.from_zones:
+                    cmds.add(f"{config_root} match to-zone {to_zone}")
         else:
             from_zone = self.from_zones[0]
             to_zone = self.to_zones[0]

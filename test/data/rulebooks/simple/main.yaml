@@ -49,8 +49,21 @@
       meta:
         created: 02-05-2020
       files:
+        config.no-apply.json:
+          renderer: jsrx
+          ruleset: management-access
+          config: {}
+        config.no-apply.set.txt:
+          renderer: jsrx-cmd
+          ruleset: management-access
+          config: {}
         config.json:
           renderer: jsrx
+          ruleset: management-access
+          config:
+            apply-group: "MANAGEMENT_ACCESS"
+        config.set.txt:
+          renderer: jsrx-cmd
           ruleset: management-access
           config:
             apply-group: "MANAGEMENT_ACCESS"
