@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Text
 
 from ...junos_command_builder import JunosCommandBuilder
 
@@ -19,8 +19,8 @@ class JunosSrxRule:
 
     @property
     def is_global(self):
-        if self.from_zones and self.to_zones and not self.force_global:
-            return len(self.from_zones) == 1 and len(self.to_zones) == 1
+        if not self.force_global and self.from_zones and self.to_zones:
+            return len(self.from_zones) != 1 or len(self.to_zones) != 1
         return True
 
     def get_json_config_element(self):
@@ -53,14 +53,15 @@ class JunosSrxRule:
         name = self.name if self.name else self.description
         config_root = "security policies"
 
+        def render_global_zones(zones: Optional[List[Text]], verb: str):
+            if zones:
+                for zone in zones:
+                    cmds.add(f"{config_root} match {verb}-zone {zone}")
+
         if self.is_global:
             config_root = f"{config_root} global policy {name}"
-            if self.from_zones:
-                for from_zone in self.from_zones:
-                    cmds.add(f"{config_root} match from-zone {from_zone}")
-            if self.to_zones:
-                for to_zone in self.from_zones:
-                    cmds.add(f"{config_root} match to-zone {to_zone}")
+            render_global_zones(self.from_zones, "from")
+            render_global_zones(self.to_zones, "to")
         else:
             from_zone = self.from_zones[0]
             to_zone = self.to_zones[0]

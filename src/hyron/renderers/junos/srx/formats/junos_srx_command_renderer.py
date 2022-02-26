@@ -1,15 +1,17 @@
 from functools import reduce
+from typing import Iterable
 
 from ..junos_srx_renderer import JunosSrxRenderer
+from ..datastructures import JunosSrxDatastructure
 
 
 class JunosSrxCommandRenderer(JunosSrxRenderer, register="jsrx-cmd"):
     @staticmethod
     def flatten(lists):
-        return reduce(lambda x, y: x + y, lists)
+        return reduce(lambda x, y: x + y, lists, [])
 
     @classmethod
-    def build_commands(cls, datastructures, apply_group=None):
+    def build_commands(cls, datastructures: Iterable[JunosSrxDatastructure], apply_group=None):  # noqa
         return cls.flatten(
             map(lambda x: x.get_set_commands(apply_group), datastructures)
         )

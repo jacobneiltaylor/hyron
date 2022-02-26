@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hyron",
-    version="0.1.0",
+    version="0.2.0",
     author="Jacob Neil Taylor",
     author_email="me@jacobtaylor.id.au",
     description="The Network Security Policy Automation Framework",

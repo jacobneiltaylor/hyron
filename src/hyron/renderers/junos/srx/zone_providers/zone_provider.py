@@ -2,13 +2,14 @@ from abc import abstractmethod
 from typing import Tuple, List
 from plugable import Plugable
 from .....helpers import get_plural_dict_item, as_list
+from .....rules import Rule
 
 
 class JunosSrxZoneProvider(Plugable):
     META_FROM_ZONE = "jsrx_from_zones"
     META_TO_ZONE = "jsrx_to_zones"
 
-    def get_zones(self, rule):
+    def get_zones(self, rule: Rule):
         from_zones, to_zones = self._get_zones(rule)
 
         if self.META_FROM_ZONE in rule.metadata:
