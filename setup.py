@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hyron",
-    version="0.2.0",
+    version="0.2.1",
     author="Jacob Neil Taylor",
     author_email="me@jacobtaylor.id.au",
     description="The Network Security Policy Automation Framework",
@@ -25,7 +25,7 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",  # noqa
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     install_requires=[
         "requests",
         "metaloader",
